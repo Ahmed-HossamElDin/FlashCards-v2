@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Notifications } from "expo";
+import  { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 
 const NOTIFICATION_KEY = "udaciFlashcards2:notifications";

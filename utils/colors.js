@@ -1,0 +1,11 @@
+export const purple = "#282477";
+export const gray = "#767575";
+export const white = "#fff";
+export const red = "#b61845";
+export const orange = "#f36f28";
+export const blue = "#4d4cb8";
+export const lightPurp = "#7d53c3";
+export const pink = "#b73fb3";
+export const green = "#24b95b";
+export const lightPink = "#fdeff0";
+export const black = "#000";

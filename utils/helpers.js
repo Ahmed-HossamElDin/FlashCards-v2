@@ -24,27 +24,31 @@ export const getDailyReminderValue = () => {
 export function setLocalNotification() {
   AsyncStorage.getItem(NOTIFICATION_KEY)
     .then(JSON.parse)
-    .then((data) => {
+    .then(data => {
       if (data === null) {
-        Permissions.askAsync(Permissions.NOTIFICATIONS).then(({ status }) => {
-          if (status === "granted") {
-            Notifications.cancelAllScheduledNotificationsAsync();
+        Notifications.requestPermissionsAsync()
+          .then(({ status }) => {
+            if (status === 'granted') {
+              Notifications.cancelAllScheduledNotificationsAsync();
 
-            let tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate());
-            tomorrow.setHours(18);
-            tomorrow.setMinutes(50);
+              let tomorrow = new Date();
+              tomorrow.setDate(tomorrow.getDate() + 1);
+              tomorrow.setHours(19);
+              tomorrow.setMinutes(30);
 
-            Notifications.scheduleLocalNotificationAsync(createNotification(), {
-              time: tomorrow,
-              repeat: "day",
-            });
+              Notifications.scheduleLocalNotificationAsync(
+                createNotification(), {
+                time: tomorrow,
+                repeat: 'day'
+              });
 
-            AsyncStorage.setItem("notification", JSON.stringify(true));
-          }
-        });
+              AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true));
+            }
+          }).catch(err => {
+              console.log(err)});
       }
-    });
+    }).catch(err => {
+      console.log(err)});
 }
 
 export function clearLocalNotification() {

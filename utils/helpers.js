@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
 
-const NOTIFICATION_KEY = "udaciFlashcards:notifications";
+const NOTIFICATION_KEY = "udaciFlashcards2:notifications";
 
 const titleText = "Its Quiz Time!";
 const message = "👋 Don't forget to take a quiz today!";
@@ -24,33 +26,21 @@ export function setLocalNotification() {
     .then(JSON.parse)
     .then((data) => {
       if (data === null) {
-        Notifications.requestPermissionsAsync().then(({ granted }) => {
-          if (granted) {
-            Notifications.cancelAllScheduledNotificationsAsync().then(() => {
-              Notifications.scheduleNotificationAsync({
-                content: {
-                  title: titleText,
-                  body: message,
-                  ios: {
-                    sound: true,
-                    priority: "high",
-                    sticky: true,
-                    vibrate: true,
-                  },
-                  android: {
-                    sound: true,
-                    priority: "high",
-                    sticky: true,
-                    vibrate: true,
-                  },
-                },
-                trigger: {
-                  seconds: 24 * 60 * 60,
-                },
-              }).then((res) => {
-                AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true));
-              });
+        Permissions.askAsync(Permissions.NOTIFICATIONS).then(({ status }) => {
+          if (status === "granted") {
+            Notifications.cancelAllScheduledNotificationsAsync();
+
+            let tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate());
+            tomorrow.setHours(18);
+            tomorrow.setMinutes(50);
+
+            Notifications.scheduleLocalNotificationAsync(createNotification(), {
+              time: tomorrow,
+              repeat: "day",
             });
+
+            AsyncStorage.setItem("notification", JSON.stringify(true));
           }
         });
       }

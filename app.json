@@ -1,0 +1,12 @@
+{
+  "name": "FlashCards-v2",
+  "displayName": "FlashCards-v2",
+  "expo": {
+    "name": "FlashCards-v2",
+    "slug": "FlashCards-v2",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
